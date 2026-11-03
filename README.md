@@ -47,14 +47,28 @@ All asset paths are relative, so the site works correctly from that `/<repo-name
 empty `.nojekyll` file tells GitHub Pages to publish the files as-is instead of running them through
 Jekyll.
 
+## Tests
+
+```sh
+cd tests
+npm install
+npm test
+```
+
+Two suites: a fast jsdom one for the timer logic and a Playwright one that drives the page in your
+installed Chrome or Edge (no browser download, and it starts its own server). See
+[tests/README.md](tests/README.md) for options, including pointing the browser suite at the
+deployed URL.
+
 ## Files
 
 | File | What's in it |
-|---|---|
+| --- | --- |
 | `index.html` | Markup for the timer dial, controls, settings drawer and task list |
 | `styles.css` | Design tokens, layout, light/dark themes |
 | `app.js` | Timer engine, phase machine, settings, tasks, persistence, chime, notifications |
 | `.nojekyll` | Marker that disables Jekyll processing on GitHub Pages |
+| `tests/` | Verification suites — not loaded by the page |
 
 ## Browser support
 
