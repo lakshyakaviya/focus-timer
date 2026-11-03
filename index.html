@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Focus Timer</title>
+<meta name="description" content="A single-page Pomodoro focus timer with a task list. No accounts, no tracking — everything stays in your browser.">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='17' r='11' fill='none' stroke='%236aa9ff' stroke-width='3'/%3E%3Cpath d='M16 11v6l4 3' fill='none' stroke='%236aa9ff' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M12 3h8' stroke='%236aa9ff' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app" id="app" data-phase="focus">
+
+  <header class="app__head">
+    <h1 class="app__title">Focus&nbsp;Timer</h1>
+    <p class="app__sub">Pomodoro sessions and a task list, kept in this browser.</p>
+  </header>
+
+  <main class="layout">
+
+    <!-- ───────────── timer ───────────── -->
+    <section class="panel panel--timer" aria-labelledby="timer-heading">
+      <h2 class="sr-only" id="timer-heading">Timer</h2>
+
+      <div class="dial">
+        <svg class="dial__ring" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+          <circle class="dial__track" cx="100" cy="100" r="88"></circle>
+          <circle class="dial__progress" id="ringProgress" cx="100" cy="100" r="88"
+                  transform="rotate(-90 100 100)"></circle>
+        </svg>
+        <div class="dial__face">
+          <p class="dial__phase" id="phaseLabel">Focus</p>
+          <p class="dial__time" id="timeDisplay">25:00</p>
+          <p class="dial__rounds" id="roundLabel">Round 1 of 4</p>
+        </div>
+      </div>
+
+      <p class="next-up" id="nextUp">Up next: short break · 5:00</p>
+
+      <div class="controls">
+        <button class="btn btn--primary" id="startPause" type="button">Start</button>
+        <button class="btn" id="resetBtn" type="button">Reset</button>
+        <button class="btn" id="skipBtn" type="button">Skip</button>
+      </div>
+
+      <p class="hint hint--keys"><kbd>Space</kbd> start / pause &nbsp;·&nbsp; <kbd>R</kbd> reset</p>
+
+      <details class="settings" id="settingsDrawer">
+        <summary class="settings__summary">Settings</summary>
+        <div class="settings__body">
+
+          <div class="field-grid">
+            <p class="field">
+              <label for="focusMin">Focus</label>
+              <span class="field__input">
+                <input type="number" id="focusMin" min="1" max="180" step="1" inputmode="numeric">
+                <span class="field__unit">min</span>
+              </span>
+            </p>
+            <p class="field">
+              <label for="shortMin">Short break</label>
+              <span class="field__input">
+                <input type="number" id="shortMin" min="1" max="180" step="1" inputmode="numeric">
+                <span class="field__unit">min</span>
+              </span>
+            </p>
+            <p class="field">
+              <label for="longMin">Long break</label>
+              <span class="field__input">
+                <input type="number" id="longMin" min="1" max="180" step="1" inputmode="numeric">
+                <span class="field__unit">min</span>
+              </span>
+            </p>
+            <p class="field">
+              <label for="rounds">Rounds per long break</label>
+              <span class="field__input">
+                <input type="number" id="rounds" min="1" max="12" step="1" inputmode="numeric">
+                <span class="field__unit">×</span>
+              </span>
+            </p>
+          </div>
+
+          <ul class="toggles">
+            <li class="toggle">
+              <input type="checkbox" id="autoAdvance">
+              <label for="autoAdvance">Start the next phase automatically</label>
+            </li>
+            <li class="toggle">
+              <input type="checkbox" id="sound">
+              <label for="sound">Play a chime when a phase ends</label>
+            </li>
+            <li class="toggle">
+              <input type="checkbox" id="notify">
+              <label for="notify">Show a desktop notification</label>
+            </li>
+          </ul>
+
+          <p class="hint hint--warn" id="notifyHint" hidden></p>
+          <button class="btn btn--ghost btn--small" id="restoreDefaults" type="button">Restore defaults</button>
+        </div>
+      </details>
+    </section>
+
+    <!-- ───────────── tasks ───────────── -->
+    <section class="panel panel--tasks" aria-labelledby="tasks-heading">
+      <div class="tasks__head">
+        <h2 id="tasks-heading">Tasks</h2>
+        <p class="tasks__count" id="taskCount">0 of 0 done</p>
+      </div>
+
+      <form class="task-form" id="taskForm" autocomplete="off">
+        <input class="task-form__input" id="taskInput" type="text" maxlength="200"
+               placeholder="Add a task…" aria-label="New task">
+        <button class="btn btn--primary" type="submit">Add</button>
+      </form>
+
+      <ul class="task-list" id="taskList"></ul>
+
+      <p class="empty" id="taskEmpty">Nothing here yet — add your first task above.</p>
+
+      <div class="tasks__foot">
+        <button class="btn btn--ghost btn--small" id="clearDone" type="button">Clear completed</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="app__foot">
+    <p>Saved in this browser only. Clearing site data clears your tasks.</p>
+  </footer>
+
+  <p class="sr-only" id="liveRegion" role="status" aria-live="polite"></p>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
